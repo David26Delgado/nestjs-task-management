@@ -19,9 +19,6 @@ export class TasksService {
   }
 
   async getTaskById(id: number, user: User): Promise<Task> {
-    console.log('id', id);
-    console.log('user', user);
-
     const found = await this.taskRepository.findOne({
       where: { id, userId: user.id },
     });
@@ -45,11 +42,15 @@ export class TasksService {
     }
   }
 
-  // async updateTaskStatus(id: number, status: TaskStatus): Promise<Task> {
-  //   const task = await this.getTaskById(id);
-  //   task.status = status;
-  //   await task.save();
-  //
-  //   return task;
-  // }
+  async updateTaskStatus(
+    id: number,
+    status: TaskStatus,
+    user: User,
+  ): Promise<Task> {
+    const task = await this.getTaskById(id, user);
+    task.status = status;
+    await task.save();
+
+    return task;
+  }
 }
